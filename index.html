@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RameshDBA – Oracle DBA Tutorials, Scripts & Courses</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --accent: #f97316;
+    --accent2: #3b82f6;
+    --gold: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e2d45;
+    --green: #10b981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,14,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+  }
+
+  .logo-text {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+
+  .logo-text span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links a:hover { color: var(--text); background: var(--surface); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: white !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 8px !important;
+  }
+
+  .nav-cta:hover { background: #ea6c0a !important; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(249,115,22,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 20% 70%, rgba(59,130,246,0.06) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(30,45,69,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,45,69,0.3) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.3);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 500px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 0.85rem 1.8rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { background: #ea6c0a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,0.3); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    padding: 0.85rem 1.8rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .stat { text-align: left; }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ─── PROFILE CARD ─── */
+  .profile-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .profile-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    border: 3px solid var(--border);
+  }
+
+  .profile-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.25rem; }
+  .profile-title { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; }
+  .profile-bio { color: var(--muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.5rem; }
+
+  .profile-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .yt-sub-btn {
+    width: 100%;
+    background: #ff0000;
+    color: white;
+    border: none;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .yt-sub-btn:hover { background: #cc0000; transform: translateY(-1px); }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-sub { color: var(--muted); font-size: 1rem; max-width: 520px; }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 2rem;
+  }
+
+  /* ─── TOPIC CARDS ─── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topic-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  }
+
+  .topic-card:hover .topic-icon { transform: scale(1.1); }
+
+  .topic-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+    display: block;
+    transition: transform 0.2s;
+  }
+
+  .topic-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .topic-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ─── YOUTUBE SECTION ─── */
+  .yt-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 2rem;
+  }
+
+  .yt-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .yt-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .video-card {
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .video-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    border-color: #ff4444;
+  }
+
+  .video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #1a1a2e;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .video-thumb-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+    opacity: 0.15;
+  }
+
+  .play-btn {
+    width: 52px; height: 52px;
+    background: rgba(255,0,0,0.9);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    z-index: 1;
+    transition: transform 0.2s;
+  }
+
+  .video-card:hover .play-btn { transform: scale(1.15); }
+
+  .video-duration {
+    position: absolute;
+    bottom: 8px; right: 8px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-family: 'Space Mono', monospace;
+    z-index: 1;
+  }
+
+  .video-info { padding: 1rem; }
+
+  .video-category {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .video-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+
+  .video-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ─── BLOG ARTICLES ─── */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .article-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  }
+
+  .article-cat {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .cat-dataguard { background: rgba(59,130,246,0.1); color: var(--accent2); border: 1px solid rgba(59,130,246,0.2); }
+  .cat-tuning { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+  .cat-rman { background: rgba(249,115,22,0.1); color: var(--accent); border: 1px solid rgba(249,115,22,0.2); }
+  .cat-rac { background: rgba(251,191,36,0.1); color: var(--gold); border: 1px solid rgba(251,191,36,0.2); }
+  .cat-script { background: rgba(139,92,246,0.1); color: #a78bfa; border: 1px solid rgba(139,92,246,0.2); }
+
+  .article-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    flex-grow: 1;
+  }
+
+  .article-excerpt {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+
+  .article-footer .read-more {
+    color: var(--accent2);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ─── COURSE / MONETIZE SECTION ─── */
+  .money-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 2rem;
+  }
+
+  .money-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .money-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .money-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .money-item:hover { border-color: var(--gold); }
+
+  .money-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .money-item-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+  .money-item-desc { font-size: 0.82rem; color: var(--muted); }
+
+  .course-card {
+    background: linear-gradient(135deg, var(--surface2), var(--bg));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .course-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--accent));
+  }
+
+  .course-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    color: var(--gold);
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+  }
+
+  .course-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem; }
+  .course-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.5rem; }
+
+  .course-includes {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+
+  .course-includes li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .course-includes li:last-child { border-bottom: none; }
+  .course-includes .check { color: var(--green); }
+
+  .price-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .price-current { font-family: 'Space Mono', monospace; font-size: 2rem; font-weight: 700; color: var(--text); }
+  .price-old {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+  .price-tag {
+    background: rgba(16,185,129,0.1);
+    color: var(--green);
+    border: 1px solid rgba(16,185,129,0.3);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* ─── SCRIPTS SECTION ─── */
+  .scripts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .script-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .script-card:hover { border-color: #a78bfa; transform: translateY(-3px); }
+
+  .script-header {
+    background: #0d1117;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .script-dots { display: flex; gap: 6px; }
+  .script-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .script-filename {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .script-body { padding: 1.25rem; }
+
+  pre {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: #7dd3fc;
+    line-height: 1.6;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .keyword { color: #c084fc; }
+  .string { color: #86efac; }
+  .comment { color: #475569; }
+
+  .script-footer {
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+  }
+
+  .script-name { font-weight: 600; }
+  .copy-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Sora', sans-serif;
+  }
+  .copy-btn:hover { border-color: #a78bfa; color: #a78bfa; }
+
+  /* ─── NEWSLETTER / CTA ─── */
+  .cta-section {
+    padding: 6rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(249,115,22,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-inner { max-width: 580px; margin: 0 auto; position: relative; }
+  .cta-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 1rem; }
+  .cta-sub { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6; }
+
+  .email-form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .email-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.85rem 1.2rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: 'Sora', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-input:focus { border-color: var(--accent); }
+  .email-input::placeholder { color: var(--muted); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-copy {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .social-links { display: flex; gap: 0.75rem; }
+
+  .social-btn {
+    width: 36px; height: 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .social-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  /* ─── NOTICE BANNER ─── */
+  .notice {
+    background: linear-gradient(90deg, rgba(249,115,22,0.15), rgba(59,130,246,0.15));
+    border-bottom: 1px solid var(--border);
+    padding: 10px 2rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .notice strong { color: var(--accent); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero-content { grid-template-columns: 1fr; }
+    .money-inner { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NOTICE -->
+<div class="notice">
+  🎓 <strong>New Course Launched:</strong> Oracle 19c RAC + DataGuard Complete Course — <strong>Limited Early Bird Price!</strong>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">R</div>
+    <span class="logo-text">Ramesh<span>DBA</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Tutorials</a></li>
+    <li><a href="#">DBA Scripts</a></li>
+    <li><a href="#">Videos</a></li>
+    <li><a href="#">Courses</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="nav-cta">🎓 Enroll Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-badge"><span class="dot"></span> Oracle DBA Expert • 10+ Years</div>
+      <h1>Master Oracle DBA with <span class="highlight">Real-World</span> Tutorials</h1>
+      <p>Step-by-step Oracle DBA tutorials, DataGuard, RAC, Performance Tuning, RMAN scripts, and complete training courses — all from a working DBA.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">🎬 Watch Free Videos</a>
+        <a href="#" class="btn-secondary">📚 Browse Tutorials</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">500<span>+</span></div>
+          <div class="stat-label">Video Tutorials</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">50<span>K+</span></div>
+          <div class="stat-label">YouTube Subscribers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">200<span>+</span></div>
+          <div class="stat-label">DBA Scripts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+      <div class="profile-avatar">👨‍💻</div>
+      <div class="profile-name">Ramesh (RameshDBA)</div>
+      <div class="profile-title">⚡ Senior Oracle DBA & Trainer</div>
+      <div class="profile-bio">Oracle DBA with 10+ years of hands-on experience in DataGuard, RAC, Performance Tuning, RMAN, and 19c. I teach real-world DBA skills through YouTube videos, PPT tutorials, and complete training programs.</div>
+      <div class="profile-tags">
+        <span class="tag">Oracle 19c</span>
+        <span class="tag">DataGuard</span>
+        <span class="tag">RAC</span>
+        <span class="tag">RMAN</span>
+        <span class="tag">Perf Tuning</span>
+        <span class="tag">PostgreSQL</span>
+      </div>
+      <a href="https://youtube.com/@rameshdba" class="yt-sub-btn">▶ Subscribe on YouTube — Free Tutorials</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TOPICS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">// Browse By Topic</div>
+    <h2 class="section-title">Everything a DBA Needs</h2>
+    <p class="section-sub">From installation to advanced RAC — organized the way DBAs actually work.</p>
+  </div>
+  <div class="topics-grid">
+    <div class="topic-card">
+      <span class="topic-icon">🛡️</span>
+      <div class="topic-name">DataGuard</div>
+      <div class="topic-count">32 articles</div>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">⚡</span>
+      <div class="topic-name">Performance Tuning</div>
+      <div class="topic-count">28 articles</div>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">💾</span>
+      <div class="topic-name">Backup & RMAN</div>
+      <div class="topic-count">45 articles</div>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">🔗</span>
+      <div class="topic-name">Oracle RAC</div>
+      <div class="topic-count">38 articles</div>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">🔧</span>
+      <div class="topic-name">Troubleshooting</div>
+      <div class="topic-count">60+ ORA- errors</div>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">📜</span>
+      <div class="topic-name">DBA Scripts</div>
+      <div class="topic-count">200+ scripts</div>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">🐘</span>
+      <div class="topic-name">PostgreSQL</div>
+      <div class="topic-count">20 articles</div>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">❓</span>
+      <div class="topic-name">Interview Q&A</div>
+      <div class="topic-count">100+ questions</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- YOUTUBE VIDEOS -->
+<section class="yt-section">
+  <div class="yt-inner">
+    <div class="section-header" style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div>
+        <div class="section-label">// YouTube Channel</div>
+        <h2 class="section-title">Latest Video Tutorials</h2>
+        <p class="section-sub">Watch free step-by-step Oracle DBA tutorials — with live demos, PPT explanations, and real scripts.</p>
+      </div>
+      <a href="https://youtube.com/@rameshdba" class="yt-sub-btn" style="width:auto; padding: 0.7rem 1.5rem; white-space:nowrap;">▶ View All Videos</a>
+    </div>
+    <div class="yt-videos-grid">
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-thumb-bg">🛡️</div>
+          <div class="play-btn">▶</div>
+          <div class="video-duration">18:42</div>
+        </div>
+        <div class="video-info">
+          <div class="video-category">DataGuard</div>
+          <div class="video-title">Oracle DataGuard Setup Step-by-Step (19c) – Physical Standby</div>
+          <div class="video-meta">12K views • 2 weeks ago</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb" style="background:#0a1628;">
+          <div class="video-thumb-bg">⚡</div>
+          <div class="play-btn">▶</div>
+          <div class="video-duration">24:15</div>
+        </div>
+        <div class="video-info">
+          <div class="video-category">Performance Tuning</div>
+          <div class="video-title">AWR Report Analysis – Finding Top SQL & Wait Events</div>
+          <div class="video-meta">8.4K views • 1 month ago</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb" style="background:#0d0a1e;">
+          <div class="video-thumb-bg">🔗</div>
+          <div class="play-btn">▶</div>
+          <div class="video-duration">31:08</div>
+        </div>
+        <div class="video-info">
+          <div class="video-category">Oracle RAC</div>
+          <div class="video-title">Oracle RAC Installation on VirtualBox – Full Guide 2024</div>
+          <div class="video-meta">15K views • 3 months ago</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb" style="background:#0a1a0a;">
+          <div class="video-thumb-bg">💾</div>
+          <div class="play-btn">▶</div>
+          <div class="video-duration">22:33</div>
+        </div>
+        <div class="video-info">
+          <div class="video-category">RMAN Backup</div>
+          <div class="video-title">RMAN Backup & Recovery Complete Tutorial with Shell Script</div>
+          <div class="video-meta">9.7K views • 2 months ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG / ARTICLES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">// Knowledge Base</div>
+    <h2 class="section-title">Latest Articles & Tutorials</h2>
+    <p class="section-sub">Detailed written guides — with commands, screenshots, and real-world troubleshooting.</p>
+  </div>
+  <div class="articles-grid">
+    <a href="#" class="article-card">
+      <span class="article-cat cat-dataguard">DataGuard</span>
+      <div class="article-title">How to Perform DataGuard Switchover and Failover in Oracle 19c</div>
+      <div class="article-excerpt">Step-by-step guide to performing planned switchover and emergency failover with verification steps and common pitfalls to avoid.</div>
+      <div class="article-footer">
+        <span>8 min read</span>
+        <span class="read-more">Read more →</span>
+      </div>
+    </a>
+    <a href="#" class="article-card">
+      <span class="article-cat cat-tuning">Perf Tuning</span>
+      <div class="article-title">ORA-04036: PGA Memory Exceeded – Root Cause & Fix</div>
+      <div class="article-excerpt">Real-world troubleshooting guide for PGA memory issues. Includes diagnostic queries, AWR analysis, and permanent fix steps.</div>
+      <div class="article-footer">
+        <span>6 min read</span>
+        <span class="read-more">Read more →</span>
+      </div>
+    </a>
+    <a href="#" class="article-card">
+      <span class="article-cat cat-rman">RMAN</span>
+      <div class="article-title">RMAN Backup Using Shell Script – Automated & Production-Ready</div>
+      <div class="article-excerpt">A complete shell script for automated RMAN backups with logging, email alerts, and cleanup of old backups.</div>
+      <div class="article-footer">
+        <span>5 min read</span>
+        <span class="read-more">Read more →</span>
+      </div>
+    </a>
+    <a href="#" class="article-card">
+      <span class="article-cat cat-rac">Oracle RAC</span>
+      <div class="article-title">How to Add a Node in Oracle RAC 19c – Step-by-Step</div>
+      <div class="article-excerpt">Complete guide for extending your RAC cluster with a new node, including pre-checks, cluvfy verification, and post-install steps.</div>
+      <div class="article-footer">
+        <span>10 min read</span>
+        <span class="read-more">Read more →</span>
+      </div>
+    </a>
+    <a href="#" class="article-card">
+      <span class="article-cat cat-script">Scripts</span>
+      <div class="article-title">Top 20 Oracle DBA Monitoring Scripts Every DBA Must Have</div>
+      <div class="article-excerpt">Essential scripts for monitoring tablespace, sessions, blocking locks, archive logs, and ASM diskgroup usage in any environment.</div>
+      <div class="article-footer">
+        <span>7 min read</span>
+        <span class="read-more">Read more →</span>
+      </div>
+    </a>
+    <a href="#" class="article-card">
+      <span class="article-cat cat-dataguard">DataGuard</span>
+      <div class="article-title">Flashback Primary Database in DataGuard Environment</div>
+      <div class="article-excerpt">How to safely use flashback in a DataGuard setup without reinstate issues. Includes MRP stop/start procedures and validation.</div>
+      <div class="article-footer">
+        <span>9 min read</span>
+        <span class="read-more">Read more →</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DBA SCRIPTS SECTION -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">// DBA Scripts Library</div>
+    <h2 class="section-title">Ready-to-Use Oracle Scripts</h2>
+    <p class="section-sub">Copy, paste, and run. Battle-tested scripts for monitoring, troubleshooting, and automation.</p>
+  </div>
+  <div class="scripts-grid">
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-dots">
+          <div class="script-dot" style="background:#ff5f57;"></div>
+          <div class="script-dot" style="background:#febc2e;"></div>
+          <div class="script-dot" style="background:#28c840;"></div>
+        </div>
+        <span class="script-filename">active_sessions.sql</span>
+      </div>
+      <div class="script-body">
+        <pre><span class="keyword">SELECT</span> s.sid, s.serial#,
+  s.username, s.status,
+  s.machine, q.sql_text
+<span class="keyword">FROM</span> v$session s
+<span class="keyword">JOIN</span> v$sql q
+  <span class="keyword">ON</span> s.sql_id = q.sql_id
+<span class="keyword">WHERE</span> s.status = <span class="string">'ACTIVE'</span>
+  <span class="keyword">AND</span> s.type != <span class="string">'BACKGROUND'</span>;</pre>
+      </div>
+      <div class="script-footer">
+        <span class="script-name">Find Active Sessions</span>
+        <button class="copy-btn">📋 Copy</button>
+      </div>
+    </div>
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-dots">
+          <div class="script-dot" style="background:#ff5f57;"></div>
+          <div class="script-dot" style="background:#febc2e;"></div>
+          <div class="script-dot" style="background:#28c840;"></div>
+        </div>
+        <span class="script-filename">tablespace_usage.sql</span>
+      </div>
+      <div class="script-body">
+        <pre><span class="keyword">SELECT</span> tablespace_name,
+  ROUND(used_space*8192/1024/1024) used_mb,
+  ROUND(tablespace_size*8192/1024/1024) total_mb,
+  ROUND(used_percent,2) pct_used
+<span class="keyword">FROM</span> dba_tablespace_usage_metrics
+<span class="keyword">ORDER BY</span> pct_used <span class="keyword">DESC</span>;</pre>
+      </div>
+      <div class="script-footer">
+        <span class="script-name">Tablespace Usage</span>
+        <button class="copy-btn">📋 Copy</button>
+      </div>
+    </div>
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-dots">
+          <div class="script-dot" style="background:#ff5f57;"></div>
+          <div class="script-dot" style="background:#febc2e;"></div>
+          <div class="script-dot" style="background:#28c840;"></div>
+        </div>
+        <span class="script-filename">blocking_sessions.sql</span>
+      </div>
+      <div class="script-body">
+        <pre><span class="comment">-- Find blocking sessions</span>
+<span class="keyword">SELECT</span> l1.sid blocker,
+  l2.sid blocked,
+  o.object_name
+<span class="keyword">FROM</span> v$lock l1
+<span class="keyword">JOIN</span> v$lock l2
+  <span class="keyword">ON</span> l1.id1 = l2.id1
+<span class="keyword">JOIN</span> dba_objects o
+  <span class="keyword">ON</span> l1.id1 = o.object_id
+<span class="keyword">WHERE</span> l1.block = 1;</pre>
+      </div>
+      <div class="script-footer">
+        <span class="script-name">Blocking Sessions</span>
+        <button class="copy-btn">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MONETIZE / COURSES SECTION -->
+<section class="money-section">
+  <div class="money-inner">
+    <div>
+      <div class="section-label">// Courses & Training</div>
+      <h2 class="section-title">Learn From a Working DBA</h2>
+      <p class="section-sub" style="margin-bottom:0;">Premium training programs designed for real Oracle DBA jobs — not just theory.</p>
+      <div class="money-items">
+        <div class="money-item">
+          <div class="money-icon" style="background:rgba(249,115,22,0.1);">🎓</div>
+          <div>
+            <div class="money-item-title">Online Training (Live + Recorded)</div>
+            <div class="money-item-desc">One-on-one and batch training. Covers Oracle DBA from basics to advanced RAC & DataGuard.</div>
+          </div>
+        </div>
+        <div class="money-item">
+          <div class="money-icon" style="background:rgba(59,130,246,0.1);">📑</div>
+          <div>
+            <div class="money-item-title">PPT Materials & Study Notes</div>
+            <div class="money-item-desc">Downloadable slide decks for every topic — the same ones used in YouTube videos.</div>
+          </div>
+        </div>
+        <div class="money-item">
+          <div class="money-icon" style="background:rgba(16,185,129,0.1);">💬</div>
+          <div>
+            <div class="money-item-title">1-on-1 Consulting / Doubt Clearing</div>
+            <div class="money-item-desc">Book a session to get help with your specific DBA problem or career guidance.</div>
+          </div>
+        </div>
+        <div class="money-item">
+          <div class="money-icon" style="background:rgba(251,191,36,0.1);">🎯</div>
+          <div>
+            <div class="money-item-title">Interview Preparation</div>
+            <div class="money-item-desc">Real interview Q&A based on actual Oracle DBA job interviews at top companies.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURSE CARD -->
+    <div class="course-card">
+      <div class="course-badge">⭐ Most Popular</div>
+      <div class="course-title">Oracle 19c Complete DBA Course</div>
+      <div class="course-desc">From scratch to job-ready Oracle DBA. Covers installation, DataGuard, RAC, RMAN, Performance Tuning, and real troubleshooting scenarios.</div>
+      <ul class="course-includes">
+        <li><span class="check">✓</span> 80+ hours of video content</li>
+        <li><span class="check">✓</span> PPT slides for every module</li>
+        <li><span class="check">✓</span> 200+ ready-to-use SQL scripts</li>
+        <li><span class="check">✓</span> DataGuard & RAC labs</li>
+        <li><span class="check">✓</span> Interview Q&A bank</li>
+        <li><span class="check">✓</span> Lifetime access + updates</li>
+        <li><span class="check">✓</span> Direct WhatsApp support</li>
+      </ul>
+      <div class="price-row">
+        <div class="price-current">₹4,999</div>
+        <div class="price-old">₹9,999</div>
+        <div class="price-tag">50% OFF</div>
+      </div>
+      <a href="mailto:support@rameshdba.com" class="btn-primary" style="width:100%; justify-content:center;">🎓 Enroll Now — Contact to Join</a>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="section-label" style="text-align:center;">// Stay Updated</div>
+    <h2 class="cta-title">Get New DBA Tutorials in Your Inbox</h2>
+    <p class="cta-sub">Join 5,000+ DBAs who get weekly Oracle tips, scripts, and tutorial updates from RameshDBA.</p>
+    <div class="email-form">
+      <input type="email" class="email-input" placeholder="your@email.com">
+      <a href="#" class="btn-primary">Subscribe</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-icon">R</div>
+      <span class="logo-text">Ramesh<span>DBA</span></span>
+    </a>
+    <ul class="footer-links">
+      <li><a href="#">Tutorials</a></li>
+      <li><a href="#">Scripts</a></li>
+      <li><a href="#">Courses</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="mailto:support@rameshdba.com">Contact</a></li>
+    </ul>
+    <div class="social-links">
+      <a href="#" class="social-btn" title="YouTube">▶</a>
+      <a href="#" class="social-btn" title="LinkedIn">in</a>
+      <a href="#" class="social-btn" title="Twitter">𝕏</a>
+    </div>
+  </div>
+  <div style="margin-top:2rem;">
+    <p class="footer-copy">© 2025 RameshDBA — Oracle DBA Tutorials & Training · support@rameshdba.com</p>
+  </div>
+</footer>
+
+<script>
+  // Copy button functionality
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const pre = this.closest('.script-card').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        this.textContent = '✅ Copied!';
+        setTimeout(() => this.textContent = '📋 Copy', 2000);
+      });
+    });
+  });
+</script>
+</body>
+</html>
